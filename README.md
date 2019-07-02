@@ -65,11 +65,11 @@ gitの管理から外すべきファイルを.gitignoreに記述します。
 
 様々な環境に合わせて.gitignoreのコードを作成してくれるWebサービス[gitignore.io](https://www.gitignore.io/)を利用すると、非常に簡単に用意できます。
 
-[https://www.gitignore.io/]
+https://www.gitignore.io/
 
 私の場合、`Ruby`, `Rails`, `VisualStudioCode`をキーワードにコードを生成し、編集を加えた上で使っています。実際のコードは下記のリンクから確認できます。
 
-[https://github.com/v-crn/new-rails-app/blob/master/.gitignore]
+https://github.com/v-crn/new-rails-app/blob/master/.gitignore
 
 
 <b>gitignore.ioで生成したコードからの変更点</b>
@@ -94,12 +94,12 @@ $ git commit -m "first commit"
 
 プッシュする前に、任意のGitホスティングサービスで新規リポジトリを作成します。
 
-[https://github.com/:title]
+https://github.com/
 
-[https://bitbucket.org/:title]
+https://bitbucket.org/
 
 リポジトリ作成直後に表示されるリポジトリパスをコピーしておきます。
-プロトコルとしてはHTTPSよりSSHの方が無難です。((参考：[https://qiita.com/chroju/items/67da13c672efcd2bc787:title]))
+プロトコルとしてはHTTPSよりSSHの方が無難です。((参考：[GitHubのremote URLにはどのプロトコルを使えばよいのか？](https://qiita.com/chroju/items/67da13c672efcd2bc787)))
 
 
 <b>SSH keyの形式</b>
@@ -116,9 +116,7 @@ $ git remote add origin リポジトリURL
 $ git push -u origin master
 ```
 
--u, --set-upstreamオプションを付けてプッシュすると、プッシュ成功時にプッシュ先のリモートブランチを上流ブランチとして設定します。上流ブランチ((上流ブランチ(upstream branch)：あるローカルブランチが、履歴を追跡するように設定したリモートブランチのこと。))を設定しておくと、`git push`や`git pull`などのコマンドを実行するときに引数を省略でき、便利です。
+-u, --set-upstreamオプションを付けてプッシュすると、プッシュ成功時にプッシュ先のリモートブランチを上流ブランチとして設定します。上流ブランチ（あるローカルブランチが、履歴を追跡するように設定したリモートブランチのこと）を設定しておくと、`git push`や`git pull`などのコマンドを実行するときに引数を省略でき、便利です。
 
 
-
-以上でRailsプロジェクトの最初のステップが完了しました！
-ここからガンガン開発を進めていきましょう！
+以上でRailsプロジェクトの最初のステップが完了しました！　ここからガンガン開発を進めていきましょう！

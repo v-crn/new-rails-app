@@ -55,6 +55,8 @@ $ bundle install --path vendor/bundle
 
 プロジェクト毎にGemを管理するため`vendor/bundle`にインストールするか、あるいはデフォルトのままsystem(global)にインストールするかについては種々の意見があります。私は保存先を指定する必要性がない限りデフォルトで使用します。
 
+本プロジェクトnew-rails-appでは、`vendor/bundle`をGemの保存先とした場合の実際を確認するため、pathオプションを付けて実行しました。
+
 
 # ３．`bundle exec rails new . -B -T`
 インストールしたrailsを使用してRailsプロジェクトを生成します。

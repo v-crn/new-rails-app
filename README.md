@@ -3,10 +3,10 @@
 # 前提
 
 * Mac環境
-* Bundlerインストール済み
+* bundlerインストール済み
 
 # １．`bundle init`
-プロジェクトファイルを用意し、Gemfileを生成します。
+まず最初にプロジェクトのルートになるファイルを用意し、`bundle init`コマンドでGemfileを生成します。
 
 ```
 $ mkdir new-rails-app
@@ -25,12 +25,36 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gem "rails"
 ```
 
-# ２．`bundle install --path vendor/bundle`
-保存先を`vendor/bundle`に指定してGemをインストールします。
+# ２．`bundle install`
+## グローバルインストール（デフォルト）
+bundlerでsystem(global)にGemをインストールします。
+
+```
+$ bundle install
+```
+
+rbenvでRubyのバージョンが管理されているローカルの開発環境では、Gemはsystemのrubyのインストール先に保存されます。
+
+例：`/Users/username/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/gems`
+
+ちなみにどのバージョンのrubyがsystemのglobalに設定されているかは`rbenv versions`で確認できます。
+
+```
+$ rbenv versions
+  system
+* 2.5.3 (set by /Users/username/Documents/WebDevelopment/workspace/new-rails-app/.ruby-version)
+  2.6.0
+```
+
+## Gemの保存先をプロジェクト内の`vendor/bundle`に指定したい場合
+`--path vendor/bundle`を付けます。
 
 ```
 $ bundle install --path vendor/bundle
 ```
+
+プロジェクト毎にGemを管理するため`vendor/bundle`にインストールするか、あるいはデフォルトのままsystem(global)にインストールするかについては種々の意見があります。私は保存先を指定する必要性がない限りデフォルトで使用します。
+
 
 # ３．`bundle exec rails new . -B -T`
 インストールしたrailsを使用してRailsプロジェクトを生成します。
@@ -63,11 +87,11 @@ $ rails new -h
 ## ４−１．.gitignoreの編集
 gitの管理から外すべきファイルを.gitignoreに記述します。
 
-様々な環境に合わせて.gitignoreのコードを作成してくれるWebサービス[gitignore.io](https://www.gitignore.io/)を利用すると、非常に簡単に用意できます。
+ここで、様々な環境に合わせて.gitignoreのコードを作成してくれるWebサービス[gitignore.io](https://www.gitignore.io/)を利用すると非常に簡単にこの作業が終わります。
 
 https://www.gitignore.io/
 
-私の場合、`Ruby`, `Rails`, `VisualStudioCode`をキーワードにコードを生成し、編集を加えた上で使っています。実際のコードは下記のリンクから確認できます。
+私の場合、`Ruby`, `Rails`, `VisualStudioCode`をキーワードにコードを生成し、少し変更を加えた上で使っています。実際のコードを下記のリンクに置いておきます。
 
 https://github.com/v-crn/new-rails-app/blob/master/.gitignore
 

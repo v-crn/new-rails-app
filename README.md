@@ -59,7 +59,7 @@ $ bundle install --path vendor/bundle
 
 
 # ３．`bundle exec rails new . -B -T`
-インストールしたrailsを使用してRailsプロジェクトを生成します。
+Gemfile.lockに記載されたバージョンのrailsを使用してRailsプロジェクトを生成します。
 
 ```
 $ bundle exec rails new . -B -T

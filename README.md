@@ -15,7 +15,7 @@ $ cd new-rails-app
 $ bundle init
 ```
 
-生成されたGemfileにおいて`# gem "rails"`のコメントアウトを外し、必要であればバージョンを指定します。その他最初に用意したいGemがあれば、Gemfileに記述しておきます。
+生成されたGemfileにおいて`# gem "rails"`のコメントアウトを外し、必要であればバージョンを指定します。
 
 ```
 # frozen_string_literal: true

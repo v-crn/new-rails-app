@@ -1,23 +1,22 @@
 # Railsプロジェクトの新規作成手順
-
 自分用の備忘録としてRailsプロジェクトの作成手順をここにまとめます。
 
 # 目次
-
 - [Railsプロジェクトの新規作成手順](#railsプロジェクトの新規作成手順)
 - [目次](#目次)
 - [前提](#前提)
-- [1. `bundle init`](#1-bundle-init)
-- [2. `bundle install --without production`](#2-bundle-install---without-production)
+- [1. bundle init](#1-bundle-init)
+- [2. bundle install --without production](#2-bundle-install---without-production)
   - [グローバルインストール（デフォルト）](#グローバルインストールデフォルト)
-  - [Gemの保存先をプロジェクト内の`vendor/bundle`に指定したい場合](#gemの保存先をプロジェクト内のvendorbundleに指定したい場合)
-- [3. `bundle exec rails new . -B`](#3-bundle-exec-rails-new---b)
+  - [Gemの保存先をプロジェクト内のvendor/bundleに指定したい場合](#gemの保存先をプロジェクト内のvendorbundleに指定したい場合)
+- [3. bundle exec rails new . -B](#3-bundle-exec-rails-new---b)
   - [主に使用するオプション](#主に使用するオプション)
 - [4. gitリポジトリの管理](#4-gitリポジトリの管理)
   - [4-1. .gitignoreの編集](#4-1-gitignoreの編集)
   - [4-2. ローカルリポジトリでコミット](#4-2-ローカルリポジトリでコミット)
   - [4-3. リモートリポジトリへプッシュ](#4-3-リモートリポジトリへプッシュ)
 - [5. Gemのインストール](#5-gemのインストール)
+  - [webpacker](#webpacker)
   - [Rubocop](#rubocop)
     - [gemインストール](#gemインストール)
     - [rubocopコマンド](#rubocopコマンド)
@@ -51,27 +50,29 @@
   - [pg（HerokuでpostgresqlをDBとして利用する場合）](#pgherokuでpostgresqlをdbとして利用する場合)
 - [6. 本番環境の設定（production.rb）](#6-本番環境の設定productionrb)
   - [SSL/HTPPS](#sslhtpps)
-  - [asset compile](#asset-compile)
-- [本番環境用のWebサーバー](#本番環境用のwebサーバー)
+  - [config.assets.compile = true](#configassetscompile--true)
+  - [config.require_master_key = true](#configrequire_master_key--true)
+- [7. 本番環境用のWebサーバー](#7-本番環境用のwebサーバー)
 - [Herokuデプロイ](#herokuデプロイ)
   - [Herokuの準備](#herokuの準備)
   - [初回のgit push heroku master](#初回のgit-push-heroku-master)
   - [更新の際よく使うコマンド](#更新の際よく使うコマンド)
     - [git push heroku](#git-push-heroku)
     - [DBリセット](#dbリセット)
-    - [参考](#参考-1)
+    - [Web URL確認](#web-url確認)
+    - [環境変数確認](#環境変数確認)
+  - [参考](#参考-1)
 - [おわり](#おわり)
 
 
 # 前提
-
 * Mac環境
 * bundlerインストール済み
 * ruby 2.5.3 / Rails 6.0.0
 
 本記事はRails 5.2.3の設定を基にして書かれているため新しいバージョンに対応しきれていない事項があるかもしれません。
 
-# 1. `bundle init`
+# 1. bundle init
 まずプロジェクトのルートになるファイルを用意し、`bundle init`コマンドでGemfileを生成します。
 
 ```
@@ -91,7 +92,7 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gem "rails"
 ```
 
-# 2. `bundle install --without production`
+# 2. bundle install --without production
 ## グローバルインストール（デフォルト）
 bundlerでsystem(global)にGemをインストールします。
 
@@ -112,7 +113,7 @@ $ rbenv versions
   2.6.0
 ```
 
-## Gemの保存先をプロジェクト内の`vendor/bundle`に指定したい場合
+## Gemの保存先をプロジェクト内のvendor/bundleに指定したい場合
 `--path vendor/bundle`を付けます。
 
 ```
@@ -121,7 +122,7 @@ $ bundle install --path vendor/bundle
 
 プロジェクト毎にGemを管理するため`vendor/bundle`にインストールするか、あるいはデフォルトのままsystem(global)にインストールするかについては種々の意見があります。個人的にはデフォルトのまま使用しています。
 
-# 3. `bundle exec rails new . -B`
+# 3. bundle exec rails new . -B
 Gemfile.lockに記載されたバージョンのrailsを使用してRailsプロジェクトを生成します。
 
 ```
@@ -282,6 +283,17 @@ gem "jquery-rails"
 gem "bootstrap", "~> 4.3.1"
 ```
 
+## webpacker
+Rails6からお世話になるwebpacker。デフォルトでGemfileにその名が刻まれていますが、次のコマンドでインストール必要があります。
+
+```
+$ bundle exec rails webpacker:install
+```
+
+インストール完了後、`rails s`でサーバー起動に成功すればOKです。
+後述するBootstrapの導入において使用するconfig/webpack/environment.jsはこのインストールのときに作成されます。
+
+
 ## [Rubocop](https://github.com/rubocop-hq/rubocop)
 rubyコードがコーディング規約通りに記述されているかチェックする静的コード解析ツールです。
 
@@ -423,13 +435,17 @@ $ yarn add bootstrap@4.3.1 jquery popper.js
 ```
 
 #### 2. environment.jsの作成
-続いてconfig/webpack/environment.jsを作成し、設定を書き込みます。
-```
-$ mkdir config/webpack
-$ touch config/webpack/environment.js
-```
+続いてwebpackerインストール時に生成されたconfig/webpack/environment.jsに設定を追加します。
 
 config/webpack/environment.js
+変更前
+```js
+const { environment } = require('@rails/webpacker')
+
+module.exports = environment
+```
+
+変更後
 ```js
 const { environment } = require('@rails/webpacker')
 
@@ -528,6 +544,7 @@ group :production do
 end
 ```
 
+
 # 6. 本番環境の設定（production.rb）
 ## SSL/HTPPS
 セキュリティ強化のためにSSLを導入するにはproduction.rbに次の項目を追記するだけでOKです。
@@ -539,16 +556,25 @@ config.force_ssl = true
 
 一般に本番用のWebサイトでSSLを使えるようにするためには、ドメイン毎にSSL証明書を購入し、セットアップする必要があります。が、Herokuのサブドメインを利用する場合、HerokuのSSL証明書に便乗することでその作業をしなくても済みます。
 
-## asset compile
-`config.assets.compile = false`をtrueにします。
+## config.assets.compile = true
+`config.assets.compile = false`をtrueに変更します。
 ```rb
 config.assets.compile = true
 ```
 
 Herokuにデプロイしたアプリでロゴや背景画像などが表示されない場合はこの項目がデフォルトのfalseになっていることが多いです。
 
+## config.require_master_key = true
+本番環境でのmaster key未設定を防ぐためにconfig.require_master_key = trueを有効化します。これによりmaster keyが指定されていない状態でサーバを起動しようとしてもエラーが発生するようになります。
 
-# 本番環境用のWebサーバー
+続いてHerokuにmaster keyを環境変数として設定しておきましょう。
+以下のコマンドでconfig/master.keyの値をRAILS_MASTER_KEYという名前の環境変数にセットします。
+```
+$ heroku config:set RAILS_MASTER_KEY=マスターキーの値
+```
+
+
+# 7. 本番環境用のWebサーバー
 HerokuのデフォルトではWEBrickというWebサーバを使っています。WEBrickは簡単に導入できることが特長ですが、大きなトラフィックを扱うことには適していません。多数のリクエストを捌くことに適したWebサーバの１つとしてPumaがあります。
 
 WEBrickからPumaにWebサーバを置き換えるために[HerokuのPumaドキュメント](https://devcenter.heroku.com/articles/deploying-rails-applications-with-the-puma-web-server)に沿ってセットアップします。
@@ -584,19 +610,19 @@ $ touch Procfile
  web: bundle exec puma -C config/puma.rb
 ```
 
-以上でpumaの導入は完了です。
+`rails s`でサーバ起動を確認できたらpumaの導入は完了です。
 
 # Herokuデプロイ
 ## Herokuの準備
 ```
 $ heroku create アプリ名（任意）
 $ heroku addons:create heroku-postgresql
+$ heroku config:add SECRET_KEY_BASE="$(bundle exec rails secret)"
 ```
 
 ## 初回のgit push heroku master
 ```
 $ git push heroku master
-$ heroku run rails db:migrate RAILS_ENV=production
 ```
 
 bundler 2を使用しているためにHerokuへの初回pushで`Activating bundler (2.0.1) failed:`などのエラーで失敗する場合は次のコマンドでパッチをあててください。
@@ -616,11 +642,38 @@ $ git push heroku
 ### DBリセット
 ```
 $ heroku pg:reset DATABASE
-$ heroku run rails db:migrate
-$ heroku run rails db:seed
+$ heroku run rails db:migrate RAILS_ENV=production
 ```
 
-### 参考
+### Web URL確認
+```
+$ heroku info
+=== new-rails-app-rails6
+Addons:         heroku-postgresql:hobby-dev
+Auto Cert Mgmt: false
+Dynos:          web: 1
+Git URL:        https://git.heroku.com/new-rails-app-rails6.git
+Owner:          example@example.com
+Region:         us
+Repo Size:      177 KB
+Slug Size:      54 MB
+Stack:          heroku-18
+Web URL:        https://new-rails-app-rails6.herokuapp.com/
+```
+
+
+### 環境変数確認
+```
+$ heroku config
+=== new-rails-app-rails6 Config Vars
+DATABASE_URL:     postgres://**********************
+LANG:             en_US.UTF-8
+RACK_ENV:         production
+RAILS_MASTER_KEY: **********************
+SECRET_KEY_BASE:  **********************
+```
+
+## 参考
 [RailsアプリをHerokuにデプロイする](https://v-crn.hatenablog.com/entry/2019/07/02/Rails%E3%82%A2%E3%83%97%E3%83%AA%E3%82%92Heroku%E3%81%AB%E3%83%87%E3%83%97%E3%83%AD%E3%82%A4%E3%81%99%E3%82%8B)
 
 # おわり

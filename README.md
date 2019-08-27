@@ -45,7 +45,7 @@
       - [4. application.scssの作成](#4-applicationscssの作成)
       - [5. application.html.erbの編集](#5-applicationhtmlerbの編集)
       - [参考](#参考)
-    - [導入手順（Rails 6未満の場合）- Railsプロジェクトの新規作成手順](#導入手順rails-6未満の場合--railsプロジェクトの新規作成手順)
+    - [導入手順（Rails 6未満の場合）](#導入手順rails-6未満の場合)
       - [1. application.cssの編集](#1-applicationcssの編集)
       - [2. application.jsに依存関係を記述する](#2-applicationjsに依存関係を記述する)
   - [pg（HerokuでpostgresqlをDBとして利用する場合）](#pgherokuでpostgresqlをdbとして利用する場合)
@@ -67,9 +67,9 @@
 
 * Mac環境
 * bundlerインストール済み
-* Rails 6.0.0
+* ruby 2.5.3 / Rails 6.0.0
 
-本記事はRails 5.2.3の設定を基にして書かれているため新しいバージョンに対応しきれていない項目があるかもしれません。
+本記事はRails 5.2.3の設定を基にして書かれているため新しいバージョンに対応しきれていない事項があるかもしれません。
 
 # 1. `bundle init`
 まずプロジェクトのルートになるファイルを用意し、`bundle init`コマンドでGemfileを生成します。
@@ -207,7 +207,7 @@ $ git push -u origin master
 # 5. Gemのインストール
 最初にGemfileの完成形を示し、それから導入したGemについて説明します。
 
-[Gemfile]()
+[Gemfile](https://github.com/v-crn/new-rails-app/blob/master/Gemfile)
 ```
 # frozen_string_literal: true
 
@@ -303,7 +303,7 @@ $ rubocop -a
 #### 設定ファイルの作成
 拡張子.ymlのファイルをrubocopの設定ファイルとして用意します。
 
-例：[]()
+例：[.rubocop.yml](https://github.com/v-crn/new-rails-app/blob/master/.rubocop.yml)
 
 内容は以下のリンクを参考に編集しました。
 - [rails/.rubocop.yml](https://github.com/rails/rails/blob/master/.rubocop.yml)
@@ -476,64 +476,7 @@ app/views/layouts/application.html.erb
 
 [Rails6 Bootstrap4 を使って Heroku で Deploy](https://qiita.com/taKassi/items/56172d140d7208230e32)
 
-### 導入手順（Rails 6未満の場合）- [Railsプロジェクトの新規作成手順](#railsプロジェクトの新規作成手順)
-- [Railsプロジェクトの新規作成手順](#railsプロジェクトの新規作成手順)
-- [目次](#目次)
-- [前提](#前提)
-- [1. `bundle init`](#1-bundle-init)
-- [2. `bundle install --without production`](#2-bundle-install---without-production)
-  - [グローバルインストール（デフォルト）](#グローバルインストールデフォルト)
-  - [Gemの保存先をプロジェクト内の`vendor/bundle`に指定したい場合](#gemの保存先をプロジェクト内のvendorbundleに指定したい場合)
-- [3. `bundle exec rails new . -B`](#3-bundle-exec-rails-new---b)
-  - [主に使用するオプション](#主に使用するオプション)
-- [4. gitリポジトリの管理](#4-gitリポジトリの管理)
-  - [4-1. .gitignoreの編集](#4-1-gitignoreの編集)
-  - [4-2. ローカルリポジトリでコミット](#4-2-ローカルリポジトリでコミット)
-  - [4-3. リモートリポジトリへプッシュ](#4-3-リモートリポジトリへプッシュ)
-- [5. Gemのインストール](#5-gemのインストール)
-  - [Rubocop](#rubocop)
-    - [gemインストール](#gemインストール)
-    - [rubocopコマンド](#rubocopコマンド)
-      - [コードチェック](#コードチェック)
-      - [自動修正](#自動修正)
-    - [rubocopの設定ファイル](#rubocopの設定ファイル)
-      - [設定ファイルの作成](#設定ファイルの作成)
-        - [プロジェクト専用の設定ファイル](#プロジェクト専用の設定ファイル)
-    - [VS Codeの拡張機能ruby-rubocop](#vs-codeの拡張機能ruby-rubocop)
-      - [Ruby › Rubocop: Config File Path](#ruby--rubocop-config-file-path)
-      - [Ruby › Rubocop: Execute Path](#ruby--rubocop-execute-path)
-  - [Solargraph](#solargraph)
-  - [better_errors / binding_of_caller](#better_errors--binding_of_caller)
-  - [minitest-reporters / rails-controller-testing](#minitest-reporters--rails-controller-testing)
-  - [Guard](#guard)
-    - [Gemfile](#gemfile)
-    - [初期化](#初期化)
-  - [dotenv](#dotenv)
-  - [Bootstrap](#bootstrap)
-    - [Bootstrapで利用できる変数](#bootstrapで利用できる変数)
-    - [導入手順（Rails 6の場合）](#導入手順rails-6の場合)
-      - [1. Bootstrap4、jQuery、Popper.jsの導入](#1-bootstrap4jquerypopperjsの導入)
-      - [2. environment.jsの作成](#2-environmentjsの作成)
-      - [3. application.jsの編集](#3-applicationjsの編集)
-      - [4. application.scssの作成](#4-applicationscssの作成)
-      - [5. application.html.erbの編集](#5-applicationhtmlerbの編集)
-      - [参考](#参考)
-    - [導入手順（Rails 6未満の場合）- Railsプロジェクトの新規作成手順](#導入手順rails-6未満の場合--railsプロジェクトの新規作成手順)
-      - [1. application.cssの編集](#1-applicationcssの編集)
-      - [2. application.jsに依存関係を記述する](#2-applicationjsに依存関係を記述する)
-  - [pg（HerokuでpostgresqlをDBとして利用する場合）](#pgherokuでpostgresqlをdbとして利用する場合)
-- [6. 本番環境の設定（production.rb）](#6-本番環境の設定productionrb)
-  - [SSL/HTPPS](#sslhtpps)
-  - [asset compile](#asset-compile)
-- [本番環境用のWebサーバー](#本番環境用のwebサーバー)
-- [Herokuデプロイ](#herokuデプロイ)
-  - [Herokuの準備](#herokuの準備)
-  - [初回のgit push heroku master](#初回のgit-push-heroku-master)
-  - [更新の際よく使うコマンド](#更新の際よく使うコマンド)
-    - [git push heroku](#git-push-heroku)
-    - [DBリセット](#dbリセット)
-    - [参考](#参考-1)
-- [おわり](#おわり)
+### 導入手順（Rails 6未満の場合）
 Gemfileにjquery-railsとbootstrapを追加します。
 ```
 # Appearance

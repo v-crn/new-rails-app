@@ -1,6 +1,3 @@
-# Created by https://www.gitignore.io/api/ruby,rails,visualstudiocode
-# Edit at https://www.gitignore.io/?templates=ruby,rails,visualstudiocode
-
 ### Rails ###
 *.rbc
 capybara-*.html
@@ -82,6 +79,8 @@ yarn-debug.log*
 /test/version_tmp/
 /tmp/
 
+# Ignore Byebug command history file.
+
 ## Specific to RubyMotion:
 .dat*
 .repl_history
@@ -116,13 +115,17 @@ build-iPhoneSimulator/
 
 ### VisualStudioCode ###
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+#!.vscode/settings.json
+#!.vscode/tasks.json
+#!.vscode/launch.json
+#!.vscode/extensions.json
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
 
-# End of https://www.gitignore.io/api/ruby,rails,visualstudiocode
+# Ignore Spring files.
+/spring/*.pid
+
+# Ignore uploaded test images
+/public/uploads
